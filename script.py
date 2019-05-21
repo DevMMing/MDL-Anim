@@ -22,7 +22,13 @@ def first_pass( commands ):
 
     name = ''
     num_frames = 1
-
+    for command in commands:
+        c = command['op']
+        args = command['args']
+        if c=="frames":
+            num_frames=int(args[0])
+        elif c=="basename":
+            name=args[0]
     return (name, num_frames)
 
 """======== second_pass( commands ) ==========
@@ -44,7 +50,12 @@ def first_pass( commands ):
   ===================="""
 def second_pass( commands, num_frames ):
     frames = [ {} for i in range(num_frames) ]
-
+    for command in commands:
+        c = command['op']
+        args = command['args']
+        if c=="vary":
+            for i in range(int(args[0]),int(args[1])+1,int(args[3]-args[2])):
+                frames[i]["knob"]=command["knob"]
     return frames
 
 
@@ -97,7 +108,7 @@ def run(filename):
     coords1 = []
 
     for command in commands:
-        print command
+        print symbols
         c = command['op']
         args = command['args']
         knob_value = 1
