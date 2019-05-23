@@ -49,13 +49,20 @@ def first_pass( commands ):
   appropirate value.
   ===================="""
 def second_pass( commands, num_frames ):
-    frames = [ {} for i in range(num_frames) ]
+    frames = [ {"frame":[]} for i in range(num_frames) ]
     for command in commands:
         c = command['op']
         args = command['args']
         if c=="vary":
-            for i in range(int(args[0]),int(args[1])+1,int(args[3]-args[2])):
-                frames[i]["knob"]=command["knob"]
+            for i in range(int(args[0]),int(args[1])+1):
+                frames[i]["frame"].append({command["knob"]:0})
+    for frame in frames:
+        f=frame["frame"]
+        for command in commands:
+            c = command['op']
+            args = command['args']
+            #knobs=command["knob"]
+          #  if c!="vary" and knob in f.keys():
     return frames
 
 
@@ -106,9 +113,12 @@ def run(filename):
     consts = ''
     coords = []
     coords1 = []
-
+    print(frames)
+    print("---")
+    print(symbols)
+    print("---")
     for command in commands:
-        print symbols
+        print command
         c = command['op']
         args = command['args']
         knob_value = 1
